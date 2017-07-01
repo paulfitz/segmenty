@@ -1,5 +1,6 @@
 Steps:
 
+ * Install opencv, opencv python wrappers, and imagemagick
  * `pip install pixplz[parallel] svgwrite tensorflow-gpu keras`
  * `./fetch_backgrounds.sh`
  * `./make_patterns.sh`
