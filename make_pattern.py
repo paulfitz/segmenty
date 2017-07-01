@@ -28,11 +28,17 @@ s2 = 8
 cx = 9
 cy = 11
 
-if mode == "mask":
+back = 'white'
+fore = 'black'
+
+if mode != "full":
+    if mode != 'mask':
+        back = 'black'
+        fore = 'white'
     svg.add(svg.circle(center=(xcenter, ycenter),
                        r=ycenter * 3,
-                       fill='black',
-                       stroke='black',
+                       fill=back,
+                       stroke=back,
                        stroke_width=s2))
 
 for ix in range(0, cx):
@@ -50,33 +56,33 @@ for ix in range(0, cx):
                 d = 3 * r2
                 if mode == "full":
                     if ix % 4 == 0:
-                        fill = 'black'
+                        fill = fore
                     else:
-                        fill = 'white'
+                        fill = back
                     svg.add(svg.circle(center=(x, y),
                                        r=r2,
                                        fill=fill,
-                                       stroke='black',
+                                       stroke=fore,
                                        stroke_width=s2))
                     svg.add(svg.line(start=(x, y),
                                      end=(x - xx * d, y - yy * d),
-                                     stroke='black',
+                                     stroke=fore,
                                      stroke_width=s2 * 2))
                 elif mode == "horizontal":
                     svg.add(svg.line(start=(x - 200, y),
                                      end=(x + 200, y),
-                                     stroke='black',
+                                     stroke=fore,
                                      stroke_width=s2 * 4))
                 elif mode == "vertical":
                     svg.add(svg.line(start=(x, y - 200),
                                      end=(x, y + 200),
-                                     stroke='black',
+                                     stroke=fore,
                                      stroke_width=s2 * 4))
                 elif mode == "middle":
                     svg.add(svg.circle(center=(xcenter, ycenter),
                                        r=r2,
-                                       fill='black',
-                                       stroke='black',
+                                       fill=fore,
+                                       stroke=fore,
                                        stroke_width=s2))
                     
             
