@@ -2,6 +2,7 @@ import json
 from keras.preprocessing.image import load_img, img_to_array
 import numpy as np
 import os
+import random
 
 
 class ImageToImage(object):
@@ -20,6 +21,7 @@ class ImageToImage(object):
     def generator(self):
         while True:
             idx = 0
+            random.shuffle(self.index)
             for i in range(0, self.steps):
                 xs = []
                 ys = []
@@ -38,13 +40,13 @@ class ImageToImage(object):
                             output_fnames = sample[self.output_label]
                             yy = np.zeros(self.image_size +
                                           (len(output_fnames),))
-                            for idx, fname in enumerate(output_fnames):
+                            for i, fname in enumerate(output_fnames):
                                 y_img = load_img(os.path.join(self.root,
                                                               fname),
                                                  grayscale=True,
                                                  target_size=self.image_size)
                                 y = img_to_array(y_img) / 255.0
-                                yy[:, :, idx] = y[:, :, 0]
+                                yy[:, :, i] = y[:, :, 0]
                             xs.append(x)
                             ys.append(yy)
                             break

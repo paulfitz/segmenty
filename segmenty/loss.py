@@ -9,6 +9,7 @@ def balanced_loss(y_true, y_pred):
            K.maximum(K.sum(gt, axis=[-3, -2]), 1.0))
     neg = (K.sum(lt * sq, axis=[-3, -2]) /
            K.maximum(K.sum(lt, axis=[-3, -2]), 1.0))
-    return (pos + neg) * 0.5
+    f = 0.5
+    return (f * pos + (1 - f) * neg)
 
 

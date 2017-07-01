@@ -1,6 +1,5 @@
 #!/bin/bash
 
-set -e
 mkdir -p background/misc
 cd background/misc
 
