@@ -1,3 +1,11 @@
+
+Computer vision is in some ways the inverse problem to computer graphics.
+Neural nets are pretty good at solving inverse problems, given enough
+examples.  Computer graphics can generate a lot of examples.  If the
+examples are realistic enough (a big if), then to solve the computer vision
+problem all you need to do is write computer graphics code and throw
+a neural network at it.
+
 Steps:
 
  * Install opencv, opencv python wrappers, and imagemagick
