@@ -30,6 +30,6 @@ done
 frames=`ls snapshots/${index}_*_montage.png | sort`
 target=animation_${index}.gif
 echo "Generating $target"
-convert -delay 100 $frames -loop 10000 $target
+convert -delay 25 $frames -loop 10000 $target
 identify $target
 echo "Saved animation as $target"
