@@ -79,3 +79,13 @@ How to train
  * Run `./test_segmenter.py /tmp/model.thing validation scratch` from time to
    time and look at visual quality of results in `scratch`.
  * Kill training when results are acceptable.
+
+
+Summary of model
+----------------
+
+ * Take in the image, 256x256x3 in this case.
+ * Apply a series of 2D convolutions and downsampling via max-pooling. This is pretty much what a simple classification network would do. I don’t try anything clever here, and the filter counts are quite random.
+ * Once we’re down at low resolution, go fully connected for a layer or two, again just like a classification network. At this point we’ve distilled down our qualitative analysis of the image, at coarse spatial resolution.  The dense layers can be trivially converted back to convolutional if you want to run all this convolutionally across larger images.
+ * Now we start upsampling, to get back towards a mask image of the same resolution as our input.
+ * Each time we upsample we apply some 2D convolutions and blend in data from filters at the same scale during downsampling. This is a neat trick used in some segmentation networks that lets you successively refine a segmentation using a blend of lower resolution context with higher resolution feature maps. (Random example: https://arxiv.org/abs/1703.00551).
