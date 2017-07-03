@@ -13,7 +13,7 @@ Synthetic test data
 -------------------
 
 Generated images on left.  Masks that we want the network to output
-on right.  There are masks for the full pattern, for vertical and
+are shown on the right.  There are masks for the full pattern, for vertical and
 horizontal grid lines, and for the center of the pattern (if visible).
 Occasional images without the target pattern are also included.
 
@@ -45,6 +45,13 @@ the key is to leave nothing reliable except the pattern you want learned.
 To classic computer vision eyes, this all looks crazy.  There's occlusion!
 Sometimes the pattern is only partially in view!  Sometimes its edges are
 all smeared out!  Relax about that.  It is not our problem anymore.
+
+The mechanics of training doesn't actually depend much on the actual
+pattern to detect and the masks to return (although the quality of the
+result may).  For this run the pattern and masks were:
+
+![masks](https://user-images.githubusercontent.com/118367/27806980-ba1b1656-5ff2-11e7-8af5-21e16cf0a9e7.png)
+
 
 Progress on real data
 ---------------------
