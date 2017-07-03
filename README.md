@@ -19,6 +19,33 @@ Occasional images without the target pattern are also included.
 
 ![example inputs](https://user-images.githubusercontent.com/118367/27806154-c5312030-5fed-11e7-9d12-807d831415de.png)
 
+Here are how the images are generated:
+
+ * Grab a large number of random images from anywhere to use as backgrounds.
+ * Shade the pattern with random gradients.
+   This is a crude simulation of lighting effects.
+ * Overlay the pattern on a background, with a random affine transformation.
+   This is a crude simulation of perspective.
+ * Draw random blobs here and there across the image.
+   This is a crude simulation of occlusion.
+ * Overlay another random image on the result so far, with a random level
+   of transparency.  This is a crude simulation of reflections, shadows,
+   more lighting effects.
+ * Distort the image randomly.
+   This is a crude simulation of camera projection effects.
+ * Apply a random directional blur to the image.
+   This is a crude simulation of motion blur.
+ * Sometimes, just leave the pattern out of all this, and leave the mask
+   empty, if you want to let the network know the pattern may not
+   always be present.
+ * Randomize the overall lighting.
+
+The precise details are hopefully not too important,
+the key is to leave nothing reliable except the pattern you want learned.
+To classic computer vision eyes, this all looks crazy.  There's occlusion!
+Sometimes the pattern is only partially in view!  Sometimes its edges are
+all smeared out!  Relax about that.  It is not our problem anymore.
+
 Progress on real data
 ---------------------
 
@@ -28,8 +55,8 @@ network output at every 10th epoch across a training run.
 
 ![iterations](https://user-images.githubusercontent.com/118367/27806155-c5316bee-5fed-11e7-928c-bbe38e2f1174.gif)
 
-Steps
------
+How to train
+------------
 
  * Install opencv, opencv python wrappers, and imagemagick
  * `pip install pixplz[parallel] svgwrite tensorflow-gpu keras Pillow`
@@ -40,6 +67,8 @@ Steps
  * `./train_segmenter.py`
  * While that is running, also run `./freshen_samples.sh` in a separate console.
    This will replace the training examples periodically to combat overfitting.
+   If you don't want to do this, use a much, much bigger number than 3000
+   for the number of training images.
  * Run `./test_segmenter.py /tmp/model.thing validation scratch` from time to
    time and look at visual quality of results in `scratch`.
  * Kill training when results are acceptable.
