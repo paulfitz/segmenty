@@ -5,6 +5,7 @@ from keras.layers import Conv2D, Dropout, Input
 from segmenty.create import load_or_create_model, persist_model
 from segmenty.hourglass import downsamples, mix, upsamples
 from segmenty.image_to_image import ImageToImage
+from segmenty.metric import tpr, tnr
 from segmenty.loss import balanced_loss
 
 
@@ -39,20 +40,6 @@ i2i = ImageToImage('training.json', **flags)
 
 flags['example'] = v_i2i.example
 
-
-import keras.backend as K
-def tpr(y_true, y_pred):
-    t = 1 - K.cast(K.less(y_true, 0.5), dtype='float32')
-    p = 1 - K.cast(K.less(y_pred, 0.5), dtype='float32')
-    tpr = (K.sum(t * p, axis=[-3, -2]) /
-           K.maximum(K.sum(t, axis=[-3, -2]), 1.0))
-    return tpr
-
-def tnr(y_true, y_pred):
-    t = K.cast(K.less(y_true, 0.5), dtype='float32')
-    n = K.cast(K.less(y_pred, 0.5), dtype='float32')
-    tnr = K.sum(t * n, axis=[-3, -2]) / K.maximum(K.sum(t, axis=[-3, -2]), 1.0)
-    return tnr
 
 mod = load_or_create_model(
     constructor=model,
