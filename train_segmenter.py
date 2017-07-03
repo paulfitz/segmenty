@@ -27,10 +27,10 @@ def model(flags):
 
     x = Conv2D(30, (1, 1), padding='valid', activation='relu')(x)
     x = Conv2D(30, (1, 1), padding='valid', activation='relu')(x)
-    x = Conv2D(len(flags['example']['y']), (1, 1), border_mode='valid',
+    x = Conv2D(len(flags['example']['y']), (1, 1), padding='valid',
                activation='sigmoid')(x)
 
-    mod = Model(input=inputs, outputs=x)
+    mod = Model(inputs=inputs, outputs=x)
 
     return mod
 
