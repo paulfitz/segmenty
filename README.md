@@ -9,8 +9,8 @@ a neural network at it.
 This is an experiment in recognizing printed patterns in real images
 based on training on generated images.
 
-Synthetic test data
--------------------
+Synthetic training data
+-----------------------
 
 Generated images on left.  Masks that we want the network to output
 are shown on the right.  There are masks for the full pattern, for vertical and
