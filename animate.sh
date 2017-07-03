@@ -27,9 +27,9 @@ for p in $prefixes; do
     fi
 done
 
-frames=`ls snapshots/${index}_*_montage.png | sort`
+frames=`ls snapshots/${index}_*1_montage.png | sort`
 target=animation_${index}.gif
 echo "Generating $target"
-convert -delay 25 $frames -loop 10000 $target
+convert -delay 50 $frames -loop 0 $target
 identify $target
 echo "Saved animation as $target"
