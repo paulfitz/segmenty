@@ -60,7 +60,7 @@ Here are some real photos of the target pattern.  The network never
 gets to see photos like this during training.  This animation shows
 network output at every 10th epoch across a training run.
 
-![iterations](https://user-images.githubusercontent.com/118367/27806155-c5316bee-5fed-11e7-928c-bbe38e2f1174.gif)
+![iterations](https://user-images.githubusercontent.com/118367/27813914-000af63c-602e-11e7-8d9a-2a4aed21c7d7.gif)
 
 How to train
 ------------
