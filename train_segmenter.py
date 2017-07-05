@@ -2,12 +2,8 @@
 
 from keras.models import Model
 from keras.layers import Conv2D, Dropout, Input
-from segmenty.create import load_or_create_model, persist_model
 from segmenty.hourglass import downsamples, mix, upsamples
-from segmenty.image_to_image import ImageToImage
-from segmenty.metric import tpr, tnr
-from segmenty.loss import balanced_loss
-
+from segmenty.run import Run
 
 flags = {
     'image_size': (256, 256),
@@ -35,24 +31,8 @@ def model(flags):
     return mod
 
 
-v_i2i = ImageToImage('validation.json', **flags)
-i2i = ImageToImage('training.json', **flags)
-
-flags['example'] = v_i2i.example
-
-
-mod = load_or_create_model(
-    constructor=model,
-    flags=flags,
-    filename='root.thing',
-    custom_objects=[balanced_loss, tpr, tnr])
-
-mod.compile(optimizer='adam', loss=balanced_loss, metrics=[tpr, tnr, 'mse'])
-
-with persist_model(mod, 'save.thing', '/tmp/model.thing') as callbacks:
-    mod.fit_generator(i2i.generator(),
-                      steps_per_epoch=i2i.steps,
-                      epochs=100000,
-                      validation_data=v_i2i.generator(),
-                      validation_steps=v_i2i.steps,
-                      callbacks=callbacks)
+run = Run()
+run.set_flags(flags)
+run.use_model(model)
+run.compile()
+run.train()
