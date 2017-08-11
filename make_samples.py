@@ -10,6 +10,8 @@ import random
 from random import randint
 import sys
 
+SHOW_CORNERS = False
+
 out = sys.argv[1]
 count = int(sys.argv[2])
 
@@ -133,6 +135,8 @@ try:
         x1 = x0 + np.cos(angles) * r
         y1 = y0 + np.sin(angles) * r
         xx = np.array((x1, y1)).transpose()
+        center = xx.mean(axis=0)
+        xs = np.concatenate(([center], xx), axis=0)
 
         blank = (np.random.random() < 0.2)
 
@@ -141,6 +145,13 @@ try:
         if not blank:
             cv2.warpPerspective(img2, M, (W, H), img1,
                                 borderMode=cv2.BORDER_TRANSPARENT)
+            xs = np.array([[W / 2, H / 2],
+                           [0, 0],
+                           [W - 1, 0],
+                           [W - 1, H - 1],
+                           [0, H - 1]], dtype=np.float32)
+            xs = np.array([xs])
+            xs = cv2.perspectiveTransform(xs, M)[0]
         delta = np.random.uniform(0.0, 0.5)
         img1 = ((1 - delta) * img1 + delta * img3).astype(np.uint8)
         dst = img1
@@ -192,11 +203,13 @@ try:
 
         cam[0, 2] = np.random.uniform(width * 0.4, width * 0.6)
         cam[1, 2] = np.random.uniform(height * 0.4, height * 0.6)
-        cam[0, 0] = cam[1, 1] = np.random.uniform(10.0, 20.0)
+        cam[0, 0] = cam[1, 1] = np.random.uniform(14.0, 20.0)
 
         dst = cv2.undistort(dst, cam, distCoeff)
         output_images = [cv2.undistort(img, cam, distCoeff)
                          for img in output_images]
+        xs = np.array([xs])
+        xs = cv2.undistortPoints(xs, cam, distCoeff, P=cam)[0]
 
         input_fname = "%s/%06d_i.jpg" % (out, k)
         output_fnames = ["%s/%06d_o_%d_%s.png" % (out, k, idx,
@@ -206,10 +219,26 @@ try:
             dst = motion_blur(dst)
         cv2.imwrite(input_fname, dst)
         for img, fname in zip(output_images, output_fnames):
+            if SHOW_CORNERS and not blank:
+                for count, (xcenter, ycenter) in enumerate(xs):
+                    cv2.ellipse(img,
+                                (xcenter, ycenter),
+                                (4, 4),
+                                random.randint(0, 359),
+                                0,
+                                360,
+                                (50 + 200 * (count % 2),
+                                 50 + 100 * (count % 3),
+                                 255 * ((count % 4) % 2)),
+                                thickness=-1)
             cv2.imwrite(fname, img)
+        pts = None
+        if not blank:
+            pts = [[float(x[0]), float(x[1])] for x in xs]
         part = {
             'x': input_fname,
             'y': output_fnames,
+            'pts': pts,
             'n': k
         }
         samples.append(part)
